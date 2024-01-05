@@ -30,8 +30,6 @@ function App() {
         if (fetchedData && fetchedData.length > 0) {
           setWord(fetchedData[0].word);
           setTidBit(fetchedData[0].tidbit);
-          console.log(fetchedData[0].word)
-          console.log(fetchedData[0].tidbit)
         }
       } catch (error) {
         setError(error.message)
@@ -102,7 +100,7 @@ function App() {
         updateRemainingLetters(guessResult);
       }
     } else {
-      alert("Please enter a real word");
+      alert("Please fill out all squares with normal letters!");
     }
   };
 
