@@ -113,7 +113,7 @@ function App() {
     return (
     <div className='App'>
       <Header />
-      <div style={{color: 'white', fontSize:"30px"}}>Loading... This may Take a minute for the free server to "Spin Up"</div>; 
+      <div style={{color: 'white', fontSize:"30px"}}>Loading... This may Take a minute (no seriously, like sometimes a real minute) for the free server to "Spin Up"</div>; 
     </div>
   )} 
   
