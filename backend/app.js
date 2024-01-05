@@ -13,7 +13,8 @@ const cors = require('cors');
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:3000'  // Only allow requests from this origin, don't have a temp domain yet
+    origin: [ 'https://jordle.onrender.com',
+              'http://localhost:3000']  
   }));
 
 app.use('/words', wordRoutes);
