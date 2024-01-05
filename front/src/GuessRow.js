@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-function GuessRow({ guessResult, onGuessChange, isCurrent, currentGuess, word }) {
+function GuessRow({ guessResult, onGuessChange, isCurrent, currentGuess, word, submitGuess }) {
     const placeholders = Array(word.length).fill('');
     const inputRefs = useRef(placeholders.map(() => React.createRef()));
   
@@ -20,12 +20,17 @@ function GuessRow({ guessResult, onGuessChange, isCurrent, currentGuess, word })
     };
   
     const handleKeyDown = (e, index) => {
-      if (e.key === 'Backspace' || e.key === 'Delete') {
-        if (index > 0 && !e.target.value) {
-          inputRefs.current[index - 1].current.focus();
+      if (isCurrent && onGuessChange) {
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+          if (index > 0 && !e.target.value) {
+            inputRefs.current[index - 1].current.focus();
+          }
+        }else if (e.key === 'Enter') {
+          submitGuess();
         }
       }
     };
+
   
     return (
       <div className="guess-row">

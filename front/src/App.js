@@ -142,6 +142,7 @@ function App() {
               onGuessChange={handleGuessChange}
               isCurrent={index === currentRowIndex}
               word = {word}
+              submitGuess={submitGuess}
             />
           ))}
         </div>
