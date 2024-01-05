@@ -1,0 +1,125 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+}
+.App-header {
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Intro{
+  color: aliceblue;
+}
+
+h1 {
+margin: 5px;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+.letter {
+  color: aliceblue;
+  display: inline-block;
+  border: 2px solid black;
+  margin: 5px;
+  padding: 10px;
+  font-size: 1em;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: rgb(184, 184, 48);
+}
+
+.guess-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.letter-box {
+  color: black;
+  text-align: center;
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+}
+
+.correct {
+  color: whitesmoke;
+  background-color: green;
+}
+
+.present {
+  color: whitesmoke;
+  background-color: rgb(184, 184, 48);
+}
+
+.absent {
+  color: whitesmoke;
+  background-color: rgba(117, 117, 117, 0.6); /* Or any color you prefer for normal background */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.message {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.alphabet-display {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.alphabet-letter {
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px;
+  font-size: 1.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.alphabet-letter:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
