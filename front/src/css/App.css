@@ -127,7 +127,7 @@ h3 {
 @media (max-width: 600px) {
   .App-header {
     font-size: calc(8px + 2vmin);
-    min-height: 8vh;
+    min-height: 6vh;
   }
 
   h1 {
@@ -140,9 +140,10 @@ h3 {
   }
 
   .letter-box {
-    width: 35px;
+    width: 1em;
     height: 35px;
     font-size: 1.5em;
+    margin: 2px 2px
   }
 
   .alphabet-letter {

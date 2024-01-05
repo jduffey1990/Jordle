@@ -3,7 +3,7 @@ function Header(){
         <>
             <header className="App-header">
                 <h1>
-                <span className="letter">J</span>
+                <span className="letter green" style={{width:"80px"}}>J</span>
                 <span className="letter green">O</span>
                 <span className="letter">R</span>
                 <span className="letter yellow">D</span>
