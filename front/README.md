@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# Jordle - A Word Guessing Game
+## About Jordle
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Jordle is a fun and engaging word guessing game inspired by the popular game Wordle. Unlike Wordle, where the challenge is limited to five-letter words, Jordle spices things up by varying the word length between 5 to 7 letters, offering a dynamic and slightly more challenging experience.
 
-## Available Scripts
+In Jordle, players are tasked with guessing a hidden word within a limited number of attempts. After each guess, the game provides feedback on the letters - indicating if they are correct and in the right position (green), present in the word but in the wrong position (yellow), or not in the word at all (gray). This feedback allows players to refine their subsequent guesses.
 
-In the project directory, you can run:
 
-### `npm start`
+## Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Dynamic Word Lengths**: Words vary in length from 5 to 7 letters, adding a unique twist to the guessing game.
+- **Interactive Feedback**: Each guess provides immediate color-coded feedback to help players deduce the word.
+- **Learning Opportunity**: After successfully guessing the word, players are presented with an interesting tidbit related to it.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Future Enhancements
 
-### `npm test`
+- **User Authentication**: Implement user login functionality to track individual player progress.
+- **Performance Statistics**: Analyze and display player performance, like the average number of guesses taken to solve the puzzle.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Technologies Used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Jordle is built using a range of modern web technologies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **React (v18.2.0)**: A JavaScript library for building user interfaces.
+- **Express (v4.18.2)**: Fast, unopinionated, minimalist web framework for Node.js.
+- **Knex (v3.0.1)**: A flexible SQL query builder for PostgreSQL, MySQL, and SQLite3.
+- **PostgreSQL (pg v8.11.3)**: An open-source relational database with an emphasis on extensibility and standards compliance.
+- **Cors (v2.8.5)**: Node.js package for providing a Connect/Express middleware that can be used to enable CORS.
+- **Dotenv (v16.3.1)**: Module that loads environment variables from a `.env` file into `process.env`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The application's database is hosted on ElephantSQL, a cloud-based PostgreSQL database service.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To run Jordle locally:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone the repository:
+```
+git clone https://github.com/jduffey1990/Jordle.git
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Install dependencies:
+```bash
+cd Jordle
+npm install
+```
 
-## Learn More
+3. Start the application:
+```
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser. The page will reload if you make edits, and you will see any lint errors in the console.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

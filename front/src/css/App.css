@@ -123,3 +123,36 @@ h3 {
   background-color: #0056b3;
   transform: scale(1.1);
 }
+
+@media (max-width: 600px) {
+  .App-header {
+    font-size: calc(8px + 2vmin);
+    min-height: 8vh;
+  }
+
+  h1 {
+    margin: 2px;
+    font-size: 1.2em;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  .letter-box {
+    width: 35px;
+    height: 35px;
+    font-size: 1.5em;
+  }
+
+  .alphabet-letter {
+    font-size: 1.2em;
+    width: 10px;
+    height: 30px;
+  }
+
+  .message {
+    padding: 15px;
+    font-size: 0.9em;
+  }
+}
