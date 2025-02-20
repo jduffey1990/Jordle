@@ -1,0 +1,208 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+}
+.App-header {
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Intro{
+  color: aliceblue;
+}
+
+h1 {
+margin: 5px;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+.letter {
+  color: aliceblue;
+  display: inline-block;
+  border: 2px solid black;
+  margin: 5px;
+  padding: 10px;
+  font-size: 1em;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: rgb(184, 184, 48);
+}
+
+.guess-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.letter-box {
+  color: black;
+  text-align: center;
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+}
+
+.correct {
+  color: whitesmoke;
+  background-color: green;
+}
+
+.present {
+  color: whitesmoke;
+  background-color: rgb(184, 184, 48);
+}
+
+.absent {
+  color: whitesmoke;
+  background-color: rgba(117, 117, 117, 0.6); /* Or any color you prefer for normal background */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.message {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.alphabet-display {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.alphabet-letter {
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px;
+  font-size: 1.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.alphabet-letter:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.form-card label {
+  display: block;
+  margin-bottom: 15px;  /* Adds some space between labels */
+  margin-right: 15px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Horizontally center content */
+  margin-top: 20px; /* Add some space above the button */
+}
+
+.card:hover, .form-card:hover, .loan-card:hover {
+  transform: translateY(-5px);  /* Lift the card a bit on hover */
+}
+
+.card-header, .card-footer {
+  align-content: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card-content {
+  margin-bottom: 20px;
+}
+
+.card-image, .loan-card-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-form {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;  /* Make the text bold */
+  border: none;
+  border-radius: 30px;  /* Rounded edges */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background: linear-gradient(45deg, #007bff, #0056b3);  /* Gradient background */
+  color: #ffffff;
+  outline: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);  /* subtle text shadow */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* subtle shadow for depth */
+}
+
+@media (max-width: 600px) {
+  .App-header {
+    font-size: calc(8px + 2vmin);
+    min-height: 6vh;
+  }
+
+  h1 {
+    margin: 2px;
+    font-size: 1.2em;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  .letter-box {
+    width: 1em;
+    height: 35px;
+    font-size: 1.5em;
+    margin: 2px 2px
+  }
+
+  .alphabet-letter {
+    font-size: 1.2em;
+    width: 10px;
+    height: 30px;
+  }
+
+  .message {
+    padding: 15px;
+    font-size: 0.9em;
+  }
+}
