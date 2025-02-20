@@ -1,8 +1,6 @@
 # Jordle - A Word Guessing Game
 ## About Jordle
 
-# This site and others have been affected by the data loss due to Elephant SQL closing.  Please be patient while a new data service provider is found.
-
 Jordle is a fun and engaging word guessing game inspired by the popular game Wordle. Unlike Wordle, where the challenge is limited to five-letter words, Jordle spices things up by varying the word length between 5 to 7 letters, offering a dynamic and slightly more challenging experience.
 
 In Jordle, players are tasked with guessing a hidden word within a limited number of attempts. After each guess, the game provides feedback on the letters - indicating if they are correct and in the right position (green), present in the word but in the wrong position (yellow), or not in the word at all (gray). This feedback allows players to refine their subsequent guesses.
