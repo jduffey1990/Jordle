@@ -45,7 +45,9 @@ git clone https://github.com/jduffey1990/Jordle.git
 
 2. Install dependencies:
 ```bash
-cd Jordle
+cd backend
+npm install
+cd ../front
 npm install
 ```
 
@@ -56,3 +58,8 @@ npm start
 
 This runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser. The page will reload if you make edits, and you will see any lint errors in the console.
 
+## **Hosting**
+### **DB:**
+- Tembo logged in with github
+### **Site Servin:**
+- Render logged in with git hub
