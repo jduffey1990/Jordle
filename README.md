@@ -58,6 +58,6 @@ This runs the app in development mode. Open [http://localhost:3000](http://local
 
 ## **Hosting**
 ### **DB:**
-- Tembo logged in with github
+- Neon logged in with github
 ### **Site Servin:**
 - Render logged in with git hub
