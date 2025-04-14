@@ -13,9 +13,12 @@ function Game() {
   const currentRowIndex = guesses.findIndex(guess => !guess);
   const [gameStatus, setGameStatus] = useState('playing');
 
+
   const [remainingLetters, setRemainingLetters] = useState("AEIOUBCDFGHJKLMNPQRSTVWXYZ".split(''));
   const [word, setWord] = useState('');
   const [tidBit, setTidBit] = useState('');
+  const [dict, setDict] = useState(new Set());
+  const [wildGuess, setWildGuess] = useState(2)
 
 
   const [isLoading, setIsLoading] = useState(true);
@@ -41,11 +44,36 @@ function Game() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchDict = async () => {
+      try {
+        const res = await fetch('/words.txt');
+        const text = await res.text();
+        const wordList = text
+          .split('\n')
+          .map(w => w.trim().toLowerCase())
+          .filter(w => w.length); // Remove any empty lines
+  
+        const wordSet = new Set(wordList);
+        setDict(wordSet);
+      } catch (error) {
+        setError(error.message);
+        console.error('Error loading dictionary:', error);
+      }
+    };
+  
+    fetchDict();
+  }, []);
+
   const getLetterFrequencies = (word) => {
     return word.split('').reduce((acc, letter) => {
       acc[letter] = (acc[letter] || 0) + 1;
       return acc;
     }, {});
+  };
+
+  const checkDict = (word) => {
+    return dict.has(word.toLowerCase())
   };
 
   const updateRemainingLetters = (guessResult) => {
@@ -66,6 +94,16 @@ function Game() {
   // Placeholder for submit guess logic
   const submitGuess = () => {
     if (currentGuess.length === word.length) {
+      if (!checkDict(currentGuess)) {
+        if (wildGuess === 0) {
+          alert("Try a real word next time, genius.");
+          return;
+        } else {
+          const nextWild = wildGuess - 1;
+          setWildGuess(nextWild);
+          alert(`You have ${nextWild} wild guess${nextWild === 1 ? '' : 'es'} remaining due to not using a proper word.`);
+        }
+      }
       const wordFrequencies = getLetterFrequencies(word);
       const guessResult = currentGuess.split('').map((letter, index) => {
         if (letter === word[index]) {
@@ -128,6 +166,9 @@ function Game() {
     return (
       <div className="App">
         <Header />
+        <p style={{ color: 'white' }}>
+          Wild guesses remaining: {wildGuess}
+        </p>
         <AlphabetDisplay remainingLetters={remainingLetters} />
         {word &&  //make sure we have the word before we set the grid
         <div className="guess-grid">
