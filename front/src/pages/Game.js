@@ -1,88 +1,100 @@
-import React, { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getWords } from '../support/Api';
 
-import GuessRow from '../components/GuessRow';
-import '../css/App.css';
-import EndGameOverlay from '../components/EndGameOverlay';
-import Header from '../components/Header';
 import AlphabetDisplay from '../components/AlphabetDisplay';
+import EndGameOverlay from '../components/EndGameOverlay';
+import GuessRow from '../components/GuessRow';
+import Header from '../components/Header';
+import '../css/App.css';
 
+// ── Toast ──────────────────────────────────────────────────────────
+let toastTimeout = null;
+
+function useToast() {
+  const [toast, setToast] = useState(null); // { message, type }
+
+  const showToast = useCallback((message, type = 'info') => {
+    setToast(null);
+    clearTimeout(toastTimeout);
+    // small delay so re-triggers re-animate
+    toastTimeout = setTimeout(() => {
+      setToast({ message, type });
+      toastTimeout = setTimeout(() => setToast(null), 2800);
+    }, 20);
+  }, []);
+
+  return { toast, showToast };
+}
+
+// ── Helpers ────────────────────────────────────────────────────────
+function getLetterFrequencies(word) {
+  return word.split('').reduce((acc, letter) => {
+    acc[letter] = (acc[letter] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+// ── Component ──────────────────────────────────────────────────────
 function Game() {
-  const [guesses, setGuesses] = useState(Array(6).fill('')); // 6 guesses
-  const [currentGuess, setCurrentGuess] = useState('');
-  const currentRowIndex = guesses.findIndex(guess => !guess);
-  const [gameStatus, setGameStatus] = useState('playing');
-
-
-  const [remainingLetters, setRemainingLetters] = useState("AEIOUBCDFGHJKLMNPQRSTVWXYZ".split(''));
-  const [word, setWord] = useState('');
-  const [tidBit, setTidBit] = useState('');
-  const [dict, setDict] = useState(new Set());
-  const [wildGuess, setWildGuess] = useState(2)
-
-
+  const [guesses, setGuesses]               = useState(Array(6).fill(''));
+  const [currentGuess, setCurrentGuess]     = useState('');
+  const [gameStatus, setGameStatus]         = useState('playing');
+  const [rowStates, setRowStates]           = useState(Array(6).fill(null));
+  const [remainingLetters, setRemainingLetters] = useState(
+    "AEIOUBCDFGHJKLMNPQRSTVWXYZ".split('')
+  );
+  const [word, setWord]       = useState('');
+  const [tidBit, setTidBit]   = useState('');
+  const [dict, setDict]       = useState(new Set());
+  const [wildGuess, setWildGuess] = useState(2);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError]     = useState(null);
 
+  const { toast, showToast } = useToast();
+
+  const currentRowIndex = guesses.findIndex(guess => !guess);
+
+  // ── Fetch word ──
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true); // Start loading
+    (async () => {
+      setIsLoading(true);
       try {
-        const fetchedData = await getWords(); // Assuming getWords returns the word and tidbit
-        if (fetchedData && fetchedData.length > 0) {
-          setWord(fetchedData[0].word);
-          setTidBit(fetchedData[0].tidbit);
+        const data = await getWords();
+        if (data && data.length > 0) {
+          setWord(data[0].word);
+          setTidBit(data[0].tidbit);
         }
-      } catch (error) {
-        setError(error.message)
-        console.error('Error fetching word and tidbit:', error);
-        // Handle the error as you see fit
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching word:', err);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    };
-
-    fetchData();
+    })();
   }, []);
 
+  // ── Fetch dictionary ──
   useEffect(() => {
-    const fetchDict = async () => {
+    (async () => {
       try {
-        const res = await fetch('/words.txt');
+        const res  = await fetch('/words.txt');
         const text = await res.text();
-        const wordList = text
-          .split('\n')
-          .map(w => w.trim().toLowerCase())
-          .filter(w => w.length); // Remove any empty lines
-  
-        const wordSet = new Set(wordList);
+        const wordSet = new Set(
+          text.split('\n').map(w => w.trim().toLowerCase()).filter(Boolean)
+        );
         setDict(wordSet);
-      } catch (error) {
-        setError(error.message);
-        console.error('Error loading dictionary:', error);
+      } catch (err) {
+        console.error('Error loading dictionary:', err);
       }
-    };
-  
-    fetchDict();
+    })();
   }, []);
 
-  const getLetterFrequencies = (word) => {
-    return word.split('').reduce((acc, letter) => {
-      acc[letter] = (acc[letter] || 0) + 1;
-      return acc;
-    }, {});
-  };
-
-  const checkDict = (word) => {
-    return dict.has(word.toLowerCase())
-  };
-
+  // ── Helpers ──
   const updateRemainingLetters = (guessResult) => {
-    const incorrectLetters = guessResult
-      .filter(guess => guess.status === 'absent')
-      .map(guess => guess.letter);
-  
-    const newRemaining = remainingLetters.filter(letter => !incorrectLetters.includes(letter));
-    setRemainingLetters(newRemaining);
+    const absentLetters = guessResult
+      .filter(g => g.status === 'absent')
+      .map(g => g.letter);
+    setRemainingLetters(prev => prev.filter(l => !absentLetters.includes(l)));
   };
 
   const handleGuessChange = (event, index) => {
@@ -91,112 +103,173 @@ function Game() {
     setCurrentGuess(newGuess.join(''));
   };
 
-  // Placeholder for submit guess logic
-  const submitGuess = () => {
-    if (currentGuess.length === word.length) {
-      if (!checkDict(currentGuess)) {
-        if (wildGuess === 0) {
-          alert("Try a real word next time, genius.");
-          return;
-        } else {
-          const nextWild = wildGuess - 1;
-          setWildGuess(nextWild);
-          alert(`You have ${nextWild} wild guess${nextWild === 1 ? '' : 'es'} remaining due to not using a proper word.`);
-        }
-      }
-      const wordFrequencies = getLetterFrequencies(word);
-      const guessResult = currentGuess.split('').map((letter, index) => {
-        if (letter === word[index]) {
-          wordFrequencies[letter]--;
-          return { letter, status: 'correct' };
-        }
-        return { letter, status: null }; // Temporarily set status to null
+  // ── Animate a row ──
+  const triggerRowState = (index, state) => {
+    setRowStates(prev => {
+      const next = [...prev];
+      next[index] = state;
+      return next;
+    });
+    setTimeout(() => {
+      setRowStates(prev => {
+        const next = [...prev];
+        next[index] = null;
+        return next;
       });
-  
-      guessResult.forEach(guess => {
-        if (guess.status === null) {
-          if (word.includes(guess.letter) && wordFrequencies[guess.letter] > 0) {
-            guess.status = 'present';
-            wordFrequencies[guess.letter]--;
-          } else {
-            guess.status = 'absent';
-          }
-        }
-      });
-
-      const newGuesses = [...guesses];
-      newGuesses[currentRowIndex] = guessResult;
-      setGuesses(newGuesses);
-  
-      if (currentGuess === word) {
-        setGameStatus('won');
-      } else if (currentRowIndex === guesses.length - 1) {
-        setGameStatus('lost');
-      } else {
-        setCurrentGuess('');
-        updateRemainingLetters(guessResult);
-      }
-    } else {
-      alert("Please fill out all squares with normal letters!");
-    }
+    }, 700);
   };
+
+  // ── Submit ──
+  const submitGuess = useCallback(() => {
+    if (currentGuess.length !== word.length) {
+      showToast(`Word must be ${word.length} letters`, 'warn');
+      triggerRowState(currentRowIndex, 'shake');
+      return;
+    }
+
+    if (!dict.has(currentGuess.toLowerCase())) {
+      if (wildGuess === 0) {
+        showToast('Not a valid word — no wild guesses left!', 'error');
+        triggerRowState(currentRowIndex, 'shake');
+        return;
+      }
+      const next = wildGuess - 1;
+      setWildGuess(next);
+      showToast(
+        `Wild guess used! ${next} wild guess${next === 1 ? '' : 'es'} left.`,
+        'warn'
+      );
+    }
+
+    const wordFreq = getLetterFrequencies(word);
+
+    // First pass: mark correct positions
+    const guessResult = currentGuess.split('').map((letter, i) => {
+      if (letter === word[i]) {
+        wordFreq[letter]--;
+        return { letter, status: 'correct' };
+      }
+      return { letter, status: null };
+    });
+
+    // Second pass: present / absent
+    guessResult.forEach(guess => {
+      if (guess.status === null) {
+        if (word.includes(guess.letter) && wordFreq[guess.letter] > 0) {
+          guess.status = 'present';
+          wordFreq[guess.letter]--;
+        } else {
+          guess.status = 'absent';
+        }
+      }
+    });
+
+    const newGuesses = [...guesses];
+    newGuesses[currentRowIndex] = guessResult;
+    setGuesses(newGuesses);
+
+    if (currentGuess === word) {
+      triggerRowState(currentRowIndex, 'bounce');
+      setTimeout(() => setGameStatus('won'), 600);
+    } else if (currentRowIndex === guesses.length - 1) {
+      setGameStatus('lost');
+    } else {
+      setCurrentGuess('');
+      updateRemainingLetters(guessResult);
+    }
+  }, [currentGuess, word, dict, wildGuess, guesses, currentRowIndex, showToast]);
 
   const onRestart = () => {
-    window.location.reload(); // Or any other logic to reset the game
-    setRemainingLetters("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')); // Reset the alphabet
+    window.location.reload();
   };
-  
+
+  // ── Render states ──
   if (isLoading) {
-    return (
-    <div className='App'>
-      <Header />
-      <div style={{color: 'white', fontSize:"30px"}}>Loading... This may Take a minute (no seriously, like sometimes a real minute) for the free server to "Spin Up"</div>
-    </div>
-  )} 
-  
-  
-  else if(error){
-    <div className='App'>
-      <Header />
-      <div>Error: {error}</div>
-    </div>
-  } 
-  
-  else{ //Normal Loaded screen
     return (
       <div className="App">
         <Header />
-        <p style={{ color: 'white' }}>
-          Wild guesses remaining: {wildGuess}
-        </p>
-        <AlphabetDisplay remainingLetters={remainingLetters} />
-        {word &&  //make sure we have the word before we set the grid
-        <div className="guess-grid">
-          {guesses.map((guess, index) => (
-            <GuessRow
-              key={index}
-              guessResult={guess}
-              currentGuess={index === currentRowIndex ? currentGuess : ''}
-              onGuessChange={handleGuessChange}
-              isCurrent={index === currentRowIndex}
-              word = {word}
-              submitGuess={submitGuess}
-            />
-          ))}
+        <div className="loading-screen">
+          <div className="loading-dots">
+            <span /><span /><span />
+          </div>
+          <p>Fetching today's word…</p>
         </div>
-        }
-        <button onClick={submitGuess}>Submit Guess</button>
-
-        {gameStatus !== 'playing' && (
-          <EndGameOverlay
-            status={gameStatus}
-            tidBit={tidBit}
-            onRestart={onRestart}
-          />
-        )}  
       </div>
-        );
-      }
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="App">
+        <Header />
+        <div className="error-screen">
+          <p>Couldn't load the game: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Wild badge pips ──
+  const pips = Array(2).fill(null).map((_, i) => (
+    <span key={i} className={i < wildGuess ? 'active' : ''} />
+  ));
+
+  const wildClass = wildGuess === 0 ? 'zero' : wildGuess === 1 ? 'low' : '';
+
+  return (
+    <div className="App">
+      <Header />
+
+      {/* Sticky alphabet — stays visible as user scrolls down on mobile */}
+      <AlphabetDisplay remainingLetters={remainingLetters} />
+
+      <div className="game-content">
+        {/* Wild guess indicator */}
+        <div className={`wild-badge ${wildClass}`}>
+          <div className="wild-pip">{pips}</div>
+          Wild guess{wildGuess === 1 ? '' : 'es'}: {wildGuess}
+        </div>
+
+        {/* Toast */}
+        {toast && (
+          <div className={`toast ${toast.type}`} key={toast.message + Date.now()}>
+            {toast.message}
+          </div>
+        )}
+
+        {/* Guess grid */}
+        {word && (
+          <div className="guess-grid">
+            {guesses.map((guess, index) => (
+              <GuessRow
+                key={index}
+                guessResult={guess || null}
+                currentGuess={index === currentRowIndex ? currentGuess : ''}
+                onGuessChange={handleGuessChange}
+                isCurrent={index === currentRowIndex}
+                word={word}
+                submitGuess={submitGuess}
+                rowState={rowStates[index]}
+              />
+            ))}
+          </div>
+        )}
+
+        <button className="submit-btn" onClick={submitGuess}>
+          Submit
+        </button>
+      </div>
+
+      {gameStatus !== 'playing' && (
+        <EndGameOverlay
+          status={gameStatus}
+          tidBit={tidBit}
+          word={word}
+          onRestart={onRestart}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Game;

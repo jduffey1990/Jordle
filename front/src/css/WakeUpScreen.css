@@ -1,0 +1,276 @@
+/* =============================================
+   WakeUpScreen — Jordle theme
+   Palette mirrors App.css:
+     bg          #282c34
+     text        aliceblue / whitesmoke
+     correct     #538d4e  (green)
+     present     #b59f3b  (yellow)
+     absent      #3a3a3c  (gray)
+     accent      #007bff  (blue, from alphabet buttons)
+   ============================================= */
+
+/* ---------- overlay ---------- */
+.wu-overlay {
+  position: fixed;
+  inset: 0;
+  background: #282c34;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  padding: 40px 16px 60px;
+}
+
+.wu-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- inner container ---------- */
+.wu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 540px;
+}
+
+/* ---------- brand ---------- */
+.wu-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.wu-logo {
+  display: flex;
+  gap: 6px;
+}
+
+/* Mirrors the .letter-box feel but bigger for a logo */
+.wu-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+.wu-tile-correct  { background: #538d4e; }
+.wu-tile-present  { background: #b59f3b; }
+.wu-tile-absent   { background: #3a3a3c; }
+
+.wu-subtitle {
+  color: rgba(240, 248, 255, 0.55);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ---------- status bar ---------- */
+.wu-status {
+  display: flex;
+  justify-content: center;
+}
+
+.wu-waking,
+.wu-ready {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: rgba(240, 248, 255, 0.7);
+  letter-spacing: 0.04em;
+}
+
+.wu-ready {
+  color: #538d4e;
+  font-weight: 600;
+}
+
+.wu-ready-icon {
+  font-size: 1.1rem;
+}
+
+/* Spinner — a small rotating ring */
+.wu-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(240, 248, 255, 0.2);
+  border-top-color: rgba(240, 248, 255, 0.7);
+  border-radius: 50%;
+  animation: wu-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes wu-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- trivia card ---------- */
+.wu-card {
+  width: 100%;
+  background: #1e2129;
+  border: 1px solid rgba(240, 248, 255, 0.08);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.wu-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.wu-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(240, 248, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.wu-score {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #538d4e;
+}
+
+.wu-score-label {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(240, 248, 255, 0.4);
+  margin-left: 2px;
+}
+
+.wu-question {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: aliceblue;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+/* ---------- answer buttons ---------- */
+.wu-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.wu-option {
+  position: relative;
+  padding: 12px 14px;
+  background: #282c34;
+  border: 2px solid rgba(240, 248, 255, 0.12);
+  border-radius: 6px;
+  color: aliceblue;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+  line-height: 1.35;
+}
+
+.wu-option:not(:disabled):hover {
+  border-color: #007bff;
+  background: rgba(0, 123, 255, 0.08);
+}
+
+/* State variants — mirrors Wordle tile colors */
+.wu-option-correct {
+  background: rgba(83, 141, 78, 0.25);
+  border-color: #538d4e;
+  color: #fff;
+}
+
+.wu-option-wrong {
+  background: rgba(181, 159, 59, 0.2);
+  border-color: #b59f3b;
+  color: #fff;
+}
+
+.wu-option-dimmed {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.wu-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.wu-badge-correct { color: #538d4e; }
+.wu-badge-wrong   { color: #b59f3b; }
+
+/* ---------- feedback line ---------- */
+.wu-feedback {
+  margin: 16px 0 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.wu-feedback-correct {
+  background: rgba(83, 141, 78, 0.15);
+  color: #7ec87a;
+}
+
+.wu-feedback-wrong {
+  background: rgba(181, 159, 59, 0.15);
+  color: #d4bc5a;
+}
+
+/* ---------- footer ---------- */
+.wu-footer {
+  font-size: 0.78rem;
+  color: rgba(240, 248, 255, 0.3);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 480px) {
+  .wu-tile {
+    width: 38px;
+    height: 38px;
+    font-size: 1.3rem;
+  }
+
+  .wu-options {
+    grid-template-columns: 1fr;
+  }
+
+  .wu-card {
+    padding: 18px 16px;
+  }
+
+  .wu-question {
+    font-size: 0.97rem;
+  }
+}

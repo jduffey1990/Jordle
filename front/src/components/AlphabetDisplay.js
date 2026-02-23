@@ -1,12 +1,15 @@
-
-
 function AlphabetDisplay({ remainingLetters }) {
-    return (
+  return (
+    <div className="alphabet-bar">
       <div className="alphabet-display">
         {remainingLetters.map((letter, index) => (
-          <span key={index} className="alphabet-letter">{letter}</span>
+          <span key={index} className="alphabet-letter">
+            {letter}
+          </span>
         ))}
       </div>
-    );
-  }
-  export default AlphabetDisplay
+    </div>
+  );
+}
+
+export default AlphabetDisplay;
